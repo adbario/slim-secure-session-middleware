@@ -95,7 +95,8 @@ class SessionMiddleware
         // Set session to use cookies and only cookies
         ini_set('session.use_cookies', 1);
         ini_set('session.use_only_cookies', 1);
-
+        
+        // If lifetime is string, convert it to timestamp
         if (is_string($lifetime)) {
             $lifetime = strtotime($lifetime) - time();
         }
