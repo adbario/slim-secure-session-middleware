@@ -16,10 +16,10 @@ use Psr\Http\Message\ResponseInterface as Response;
 class SessionMiddleware
 {
     /** @var object Application container */
-    private $container;
+    protected $container;
 
     /** @var array Default settings */
-    private $settings = [
+    protected $settings = [
 
         // Session cookie settings
         'name'           => 'slim_session',
@@ -89,7 +89,7 @@ class SessionMiddleware
     /**
      * Configure and start session
      */
-    private function start()
+    protected function start()
     {
         // Extract settings to variables
         extract($this->settings);
@@ -97,7 +97,7 @@ class SessionMiddleware
         // Set session to use cookies and only cookies
         ini_set('session.use_cookies', 1);
         ini_set('session.use_only_cookies', 1);
-        
+
         // If lifetime is string, convert it to timestamp
         if (is_string($lifetime)) {
             $lifetime = strtotime($lifetime) - time();
@@ -119,7 +119,7 @@ class SessionMiddleware
             ini_set('session.hash_function', 'sha512');
         } else {
             // PHP version >= 7.1
-            ini_set('session.sid_length', 128);
+            ini_set('session.sid_length', 64);
         }
 
         // Set session cache limiter
