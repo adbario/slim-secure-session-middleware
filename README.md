@@ -56,7 +56,9 @@ Add middleware:
     ));
 
 ### Sessions
-This class uses namespaces for sessions, so basically session variables are always inside an array and array's key is the namespace. If you insert key 'user' with value 'John' into namespace 'users', superglobal $_SESSION looks like this:
+This package comes with session helper class, but if you wish to use only PHP session superglobal, then you can skip the rest of this guide and just enjoy coding! Session security configuration is done within middleware, so by using native superglobal your session is still secure (and encrypted if you set up encryption key in settings).
+
+Session helper class uses namespaces for sessions, so basically session variables are always inside an array and array's key is the namespace. If you insert key 'user' with value 'John' into namespace 'users', superglobal $_SESSION looks like this:
     
     Array
     (
