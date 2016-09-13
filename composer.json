@@ -2,7 +2,7 @@
     "name": "adbario/slim-secure-session-middleware",
     "description": "Secure session middleware for Slim 3 framework",
     "keywords": ["slim", "session", "middleware"],
-    "homepage": "http://github.com/adbario/slim-secure-session-middleware",
+    "homepage": "https://github.com/adbario/slim-secure-session-middleware",
     "license": "MIT",
     "authors": [
         {
