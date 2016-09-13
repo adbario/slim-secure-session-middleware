@@ -68,6 +68,8 @@ Session helper class uses namespaces for sessions, so basically session variable
             )
     )
 
+If you don't need session namespaces in your application, then you can just ignore all namespace related parts on this guide and leave namespace name in settings as 'slim_app'.
+
 #### Basic usage    
 Session helper class is injected to application container and can be used as an object, i.e. like this:
 
