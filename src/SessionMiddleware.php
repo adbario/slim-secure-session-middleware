@@ -42,7 +42,10 @@ class SessionMiddleware
         'autorefresh'    => false,
 
         // Encrypt session data if string is string is set
-        'encryption_key' => null
+        'encryption_key' => null,
+
+        // Session namespace
+        'namespace'      => 'slim_app'
     ];
 
     /**
