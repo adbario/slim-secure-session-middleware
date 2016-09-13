@@ -113,7 +113,6 @@ Set multiple values as an array:
     ]);
     
     // Set values to specific namespace
-    $user = ['firstname' => 'John', 'lastname' => 'Smith'];
     $session->setTo('my_namespace', $user);
 
 #### Get value
