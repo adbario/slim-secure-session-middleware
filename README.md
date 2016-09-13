@@ -165,7 +165,7 @@ Set multiple values as an array:
     
     $session->destroy();
     
-    // Static methof
+    // Static method
     AdBar\Session::destroy();
 
 #### Regenerate session id
