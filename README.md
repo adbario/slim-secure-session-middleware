@@ -172,10 +172,10 @@ Set multiple values as an array:
     // Static method
     AdBar\Session::regenerateId();
 
-#### Set active namespace
+#### Change namespace
 
     $session->setNamespace('another_namespace');
 
-#### Get active namespace
+#### Get current namespace
 
     $namespace = $session->getNamespace();
