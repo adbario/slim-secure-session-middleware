@@ -75,7 +75,9 @@ class SessionMiddleware
         }
 
         // Inject session helper class to application container
-        $this->container['session'] = new \AdBar\Session;
+        $this->container['session'] = function () {
+            return new \AdBar\Session;
+        };
 
         // Start session
         $this->start();
