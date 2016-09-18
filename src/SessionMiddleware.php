@@ -78,8 +78,9 @@ class SessionMiddleware
         }
 
         // Inject session helper class to application container
-        $this->container['session'] = function () {
-            return new \AdBar\Session($this->settings['namespace']);
+        $namespace = $this->settings['namespace'];
+        $this->container['session'] = function () use ($namespace) {
+            return new \AdBar\Session($namespace);
         };
 
         // Start session
