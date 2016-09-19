@@ -75,7 +75,7 @@ class SessionMiddleware
         if ($this->settings['cookie_autoset'] === true) {
             $this->settings['path']   = $request->getUri()->getBasePath() . '/';
             $this->settings['domain'] = $request->getUri()->getHost();
-            $this->settings['secure'] = $request->getUri()->getScheme() === 'http' ? false : true;
+            $this->settings['secure'] = $request->getUri()->getScheme() === 'https' ? true : false;
         }
 
         // Inject session helper class to application container
