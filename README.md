@@ -255,6 +255,13 @@ Multiple values at once:
     // Dot notation
     $session->clear(['user', 'home.kids']);
 
+Format option (if given key doesn't exist, create an empty array on it):
+
+    $session->clear('my_cars', true);
+    
+    // Dot notation
+    $session->clear('user.cars', true);
+
 #### Destroy session completely
     
     $session->destroy();
