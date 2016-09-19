@@ -1,19 +1,23 @@
 # Slim Secure Session Middleware
 Secure session middleware for [Slim 3 framework](http://www.slimframework.com/).
-- longer and harder to guess session id's
+- longer and more secure session id's
+- session data encryption
+- session namespaces
+- dot notation for easy access to multidimensional session data ([Dot - PHP dot notation array access](https://github.com/adbario/php-dot-notation))
 - set session cookie path, domain and secure values automatically
 - extend session lifetime after each user activity
-- encrypt session data
-- session namespaces
 - helper class to set and get session values easily
 
 **If you're on shared host and use sessions for storing sensitive data, it's a good idea to store session files in your custom location and encrypt them.**
 
 ## Installation
+
+Via composer:
+
     composer require adbario/slim-secure-session-middleware
 
 ## Configuration
-Default settings:
+Create an array of session settings in you application settings. Default settings for session:
 
     $settings = [
         'session' => [
@@ -47,13 +51,15 @@ Default settings:
 
 ## Usage
 
+### Application
+When creating application, inject all settings:
+    
+    $app = new \Slim\App(['settings' => $settings]);
+
 ### Middleware
 Add middleware:
 
-    $app->add(new \AdBar\SessionMiddleware(
-        $app->getContainer(),
-        $settings['session']
-    ));
+    $app->add(new \AdBar\SessionMiddleware($app->getContainer()));
 
 ### Sessions
 This package comes with session helper class, but if you wish to use only PHP session superglobal, then you can skip the rest of this guide and just enjoy coding! Session security configuration is done within middleware, so by using native superglobal your session is still secure (and encrypted if you set up encryption key in settings).
@@ -95,13 +101,21 @@ Set single value:
 
     $session->set('user', 'John');
     
+    // Array style
+    $session['user'] = 'John';
+    
     // Magic method
     $session->user = 'John';
     
     // Set value to specific namespace
     $session->setTo('my_namespace', 'user', 'John');
 
-Set multiple values as an array:
+    // Dot notation can be used with all methods except magic method:
+    $session->set('user.firstname', 'John');
+    $session['user.firstname'] = 'John';
+    $session->setTo('my_namespace', 'user.firstname', 'John');
+
+Set multiple values at once:
     
     $user = ['firstname' => 'John', 'lastname' => 'Smith'];
     $session->set($user);
@@ -114,23 +128,60 @@ Set multiple values as an array:
     
     // Set values to specific namespace
     $session->setTo('my_namespace', $user);
+    
+    // Dot notation
+    $session->set([
+        'user.firstname' => 'John',
+        'user.lastname'  => 'Smith'
+    ]);
 
 #### Get value
     
-    $session->get('user');
+    echo $session->get('user');
     
     // Get default value if key doesn't exist
-    $session->get('user', 'some default user');
+    echo $session->get('user', 'some default user');
+    
+    // Array style
+    echo $session['user'];
     
     // Magic method
-    $session->user;
+    echo $session->user;
     
-    // Get value from specific namespace
-    $session->getFrom('my_namespace', 'user');
+    // From specific namespace
+    echo $session->getFrom('my_namespace', 'user');
+    
+    // Dot notation
+    echo $session->get('user.firstname');
+
+#### Add value
+
+    $session->add('users', 'Mary');
+    
+    // Dot notation
+    $session->add('home.kids', 'Jerry');
+    
+Multiple value at once:
+    
+    $session->add([
+        'users' => 'Sue',
+        'cars'  => 'Toyota'
+    ]);
+    
+    // Dot notation
+    $session->add([
+        'users'     => ['Katie', 'Ben'],
+        'home.kids' => ['Carl', 'Tom']
+    ]);
 
 #### Check if value exists
 
     if ($session->has('user')) {
+        // Do something...
+    }
+    
+    // Array style
+    if (isset($session['user'])) {
         // Do something...
     }
     
@@ -139,8 +190,13 @@ Set multiple values as an array:
         // Do something...
     }
     
-    // Check if value exists in specific namespace
+    // In specific namespace
     if ($session->hasIn('my_namespace', 'user')) {
+        // Do something...
+    }
+    
+    // Dot notation
+    if ($session->has('user.firstname')) {
         // Do something...
     }
 
@@ -148,32 +204,70 @@ Set multiple values as an array:
     
     $session->delete('user');
     
+    // Array style
+    unset($session['user']);
+    
     // Magic method
     unset($session->user);
     
-    // Delete value from specific namespace
+    // From specific namespace
     $session->deleteFrom('my_namespace', 'user');
+    
+    // Dot notation
+    $session->delete('user.firstname');
 
-#### Clear all session values
+Multiple values at once:
+
+    $session->delete(['user', 'home']);
+    
+    // From specific namespace
+    $session->deleteFrom('my_namespace', ['user', 'home'']);
+    
+    // Dot notation
+    $session->delete(['user', 'home.kids']);
+
+#### Clear values
+
+Clear all values:
 
     $session->clear();
     
-    // Clear specific namespace
+    // From specific namespace
     $session->clearFrom('my_namespace');
+
+Clear all values within specific session key:
+
+    $session->clear('user');
+    
+    // From specific namespace
+    $session->clearFrom('my_namespace', 'user');
+    
+    // Dot notation
+    $session->clear('home.kids');
+
+Multiple values at once:
+
+    $session->clear(['user', 'home']);
+    
+    // From specific namespace
+    $session->clearFrom('my_namespace', ['user', 'home']);
+    
+    // Dot notation
+    $session->clear(['user', 'home.kids']);
 
 #### Destroy session completely
     
     $session->destroy();
     
     // Static method
-    AdBar\Session::destroy();
+    \AdBar\Session::destroy();
 
 #### Regenerate session id
 
     $session->regenerateId();
     
     // Static method
-    AdBar\Session::regenerateId();
+    \AdBar\Session::regenerateId();
 
 #### Change namespace
 
