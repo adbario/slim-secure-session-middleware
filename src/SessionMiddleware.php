@@ -2,6 +2,7 @@
 
 namespace AdBar;
 
+use RuntimeException;
 use Interop\Container\ContainerInterface as Container;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -115,6 +116,9 @@ class SessionMiddleware
 
         // Set path where session cookies are saved
         if (is_string($save_path)) {
+            if (!is_writable($save_path)) {
+                throw new RuntimeException('Session save path is not writable.');
+            }
             ini_set('session.save_path', $save_path);
         }
 
@@ -134,7 +138,7 @@ class SessionMiddleware
         session_name($name);
 
         // Set session cookie parameters
-        session_set_cookie_params($lifetime, $path, $domain, (bool)$secure, (bool)$httponly);
+        session_set_cookie_params($lifetime, $path, $domain, $secure, $httponly);
 
         // Set session encryption
         if (is_string($encryption_key)) {
@@ -150,7 +154,7 @@ class SessionMiddleware
 
         // Extend session lifetime
         if ($autorefresh === true && isset($_COOKIE[$name])) {
-            setcookie($name, $_COOKIE[$name], time() + $lifetime, $path, $domain, (bool)$secure, (bool)$httponly);
+            setcookie($name, $_COOKIE[$name], time() + $lifetime, $path, $domain, $secure, $httponly);
         }
     }
 }
