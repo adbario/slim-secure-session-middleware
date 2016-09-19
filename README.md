@@ -2,11 +2,9 @@
 Secure session middleware for [Slim 3 framework](http://www.slimframework.com/).
 - longer and more secure session id's
 - session data encryption
-- session namespaces
-- dot notation for easy access to multidimensional session data ([Dot - PHP dot notation array access](https://github.com/adbario/php-dot-notation))
 - set session cookie path, domain and secure values automatically
 - extend session lifetime after each user activity
-- helper class to set and get session values easily
+- helper class to handle session values easily with namespaces and dot notation ([Dot - PHP dot notation array access](https://github.com/adbario/php-dot-notation))
 
 **If you're on shared host and use sessions for storing sensitive data, it's a good idea to store session files in your custom location and encrypt them.**
 
