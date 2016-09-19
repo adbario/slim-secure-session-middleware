@@ -14,13 +14,14 @@ use RuntimeException;
 class SecureSessionHandler extends SessionHandler
 {
     /** @var string Encryption key */
-    private $key;
+    protected $key;
 
     /**
      * Constructor
+     *
      * @param string $key Encryption key
      */
-    public function __construct($key)
+    public function __construct(string $key)
     {
         if (!extension_loaded('openssl')) {
             throw new RuntimeException('OpenSSL needs to be available to encrypt session data.');
@@ -31,20 +32,22 @@ class SecureSessionHandler extends SessionHandler
 
     /**
      * Read session data
-     * @param  int $id Session id
+     *
+     * @param  string $id Session id
      * @return string
      */
     public function read($sid)
     {
         $data = parent::read($sid);
 
-        return ($data) ? $this->decrypt($data, $this->key) : '';
+        return ($data) ? $this->decrypt($data) : null;
     }
 
     /**
      * Write session data
-     * @param  int $id   Session id
-     * @param  string $data Session data
+     *
+     * @param string $id   Session id
+     * @param string $data Session data
      */
     public function write($sid, $data)
     {
@@ -55,37 +58,37 @@ class SecureSessionHandler extends SessionHandler
 
     /**
      * Encrypt session data
-     * @param  string $data     Session data
-     * @param  string $password Encryption key
+     *
+     * @param  string $data Session data
      * @return string
      */
-    private function encrypt($data, $key)
+    protected function encrypt(string $data)
     {
         $salt = random_bytes(16);
 
-        $salted = hash('sha512', $key . $salt, true);
-        $key = substr($salted, 0, 32);
-        $iv  = substr($salted, 32, 16);
+        $salted = hash('sha512', $this->key . $salt, true);
+        $key    = substr($salted, 0, 32);
+        $iv     = substr($salted, 32, 16);
 
-        $encrypted_data = openssl_encrypt($data, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
-        return base64_encode($salt . $encrypted_data);
+        $encryptedData = openssl_encrypt($data, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
+        return base64_encode($salt . $encryptedData);
     }
 
     /**
      * Decrypt session data
-     * @param  string $edata    Encrypted session data
-     * @param  string $password Encryption key
+     *
+     * @param  string $data Encrypted session data
      * @return string
      */
-    private function decrypt($data, $key)
+    protected function decrypt(string $data)
     {
         $data = base64_decode($data);
         $salt = substr($data, 0, 16);
         $data = substr($data, 16);
 
-        $salted = hash('sha512', $key . $salt, true);
-        $key = substr($salted, 0, 32);
-        $iv  = substr($salted, 32, 16);
+        $salted = hash('sha512', $this->key . $salt, true);
+        $key    = substr($salted, 0, 32);
+        $iv     = substr($salted, 32, 16);
 
         return openssl_decrypt($data, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv);
     }
