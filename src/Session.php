@@ -18,7 +18,7 @@ class Session extends Dot
      *
      * @param string|null $namespace Session namespace
      */
-    public function __construct(string $namespace = null)
+    public function __construct($namespace = null)
     {
         if (is_string($namespace)) {
             $this->namespace = $namespace;
@@ -31,7 +31,7 @@ class Session extends Dot
      *
      * @param string $namespace Session namespace
      */
-    public function setNamespace(string $namespace)
+    public function setNamespace($namespace)
     {
         if (!isset($_SESSION[$namespace])) {
             $_SESSION[$namespace] = [];
@@ -57,7 +57,7 @@ class Session extends Dot
      * @param mixed      $key       Session key or an array of keys and values
      * @param mixed|null $value     Session value to set if key is not an array
      */
-    public function setTo(string $namespace, $key, $value = null)
+    public function setTo($namespace, $key, $value = null)
     {
         $oldNamespace = $this->namespace;
         $this->setNamespace($namespace);
@@ -72,7 +72,7 @@ class Session extends Dot
      * @param mixed      $key       Session key or an array of keys and values
      * @param mixed|null $value     Session value to add if key is not an array
      */
-    public function addTo(string $namespace, $key, $value = null)
+    public function addTo($namespace, $key, $value = null)
     {
         $oldNamespace = $this->namespace;
         $this->setNamespace($namespace);
@@ -88,7 +88,7 @@ class Session extends Dot
      * @param  mixed|null $default   Default value
      * @return mixed
      */
-    public function getFrom(string $namespace, $key = null, $default = null)
+    public function getFrom($namespace, $key = null, $default = null)
     {
         if (isset($_SESSION[$namespace])) {
             $oldNamespace = $this->namespace;
@@ -108,7 +108,7 @@ class Session extends Dot
      * @param  string $key       Session key
      * @return bool
      */
-    public function hasIn(string $namespace, string $key)
+    public function hasIn($namespace, $key)
     {
         if (isset($_SESSION[$namespace])) {
             $oldNamespace = $this->namespace;
@@ -126,7 +126,7 @@ class Session extends Dot
      * @param string $namespace Session namespace
      * @param mixed  $key       Session key or array of keys
      */
-    public function deleteFrom(string $namespace, $key)
+    public function deleteFrom($namespace, $key)
     {
         if (isset($_SESSION[$namespace])) {
             $oldNamespace = $this->namespace;
@@ -143,7 +143,7 @@ class Session extends Dot
      * @param  mixed|null $key       Session key or array of keys
      * @param  boolean    $format    Format option
      */
-    public function clearFrom(string $namespace, $key = null, $format = false)
+    public function clearFrom($namespace, $key = null, $format = false)
     {
         if (isset($_SESSION[$namespace]) || $format === true) {
             $oldNamespace = $this->namespace;
