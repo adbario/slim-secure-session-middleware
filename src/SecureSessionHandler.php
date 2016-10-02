@@ -21,7 +21,7 @@ class SecureSessionHandler extends SessionHandler
      *
      * @param string $key Encryption key
      */
-    public function __construct(string $key)
+    public function __construct($key)
     {
         if (!extension_loaded('openssl')) {
             throw new RuntimeException('OpenSSL needs to be available to encrypt session data.');
@@ -62,7 +62,7 @@ class SecureSessionHandler extends SessionHandler
      * @param  string $data Session data
      * @return string
      */
-    protected function encrypt(string $data)
+    protected function encrypt($data)
     {
         $salt = random_bytes(16);
 
@@ -80,7 +80,7 @@ class SecureSessionHandler extends SessionHandler
      * @param  string $data Encrypted session data
      * @return string
      */
-    protected function decrypt(string $data)
+    protected function decrypt($data)
     {
         $data = base64_decode($data);
         $salt = substr($data, 0, 16);
