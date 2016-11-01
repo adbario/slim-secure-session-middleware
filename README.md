@@ -39,7 +39,7 @@ Create an array of session settings in you application settings. Default setting
             // Extend session lifetime after each user activity
             'autorefresh'    => false,
     
-            // Encrypt session data if string is string is set
+            // Encrypt session data if string is set
             'encryption_key' => null,
             
             // Session namespace
