@@ -15,7 +15,7 @@ Via composer:
     composer require adbario/slim-secure-session-middleware
 
 ## Configuration
-Create an array of session settings in you application settings. **Please note that session lifetime is defined in minutes.** Default settings for session:
+Create an array of session settings in you application settings. **Please note that session lifetime is defined in minutes, not in seconds.** Default settings for session:
 
     $settings = [
         'session' => [
