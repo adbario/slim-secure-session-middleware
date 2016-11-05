@@ -90,6 +90,9 @@ class SessionMiddleware
         // Set session to use cookies and only cookies
         ini_set('session.use_cookies', 1);
         ini_set('session.use_only_cookies', 1);
+        
+        // Disable inserting session id into links automatically
+        ini_set('session.use_trans_sid', 0);
 
         if (is_string($settings['lifetime'])) {
             // if lifetime is string, convert it to seconds
