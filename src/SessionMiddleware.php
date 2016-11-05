@@ -3,7 +3,6 @@
 namespace AdBar;
 
 use RuntimeException;
-use Interop\Container\ContainerInterface as Container;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
@@ -12,13 +11,9 @@ use Psr\Http\Message\ResponseInterface as Response;
  *
  * This middleware class starts a secure session and encrypts it if encryption key is set.
  * Session cookie path, domain and secure values are configured automatically by default.
- * Session helper class will be injected to application container.
  */
 class SessionMiddleware
 {
-    /** @var object Application container */
-    protected $container;
-
     /** @var array Default settings */
     protected $settings = [
 
@@ -52,14 +47,11 @@ class SessionMiddleware
     /**
      * Constructor
      *
-     * @param Container $container Container
+     * @param array $settings Session settings
      */
-    public function __construct(Container $container)
+    public function __construct(array $settings = [])
     {
-        if (is_array($container->settings['session'])) {
-            $this->settings = array_merge($this->settings, $container->settings['session']);
-        }
-        $this->container = $container;
+        $this->settings = array_merge($this->settings, $settings);
     }
 
     /**
@@ -79,14 +71,8 @@ class SessionMiddleware
             $this->settings['secure'] = $request->getUri()->getScheme() === 'https' ? true : false;
         }
 
-        // Inject session helper class to application container
-        $namespace = $this->settings['namespace'];
-        $this->container['session'] = function () use ($namespace) {
-            return new \AdBar\Session($namespace);
-        };
-
         // Start session
-        $this->start();
+        $this->start($request);
 
         // Next middleware
         return $next($request, $response);
@@ -94,8 +80,10 @@ class SessionMiddleware
 
     /**
      * Configure and start session
+     *
+     * @param Request $request PSR7 request
      */
-    protected function start()
+    protected function start(Request $request)
     {
         // Extract settings to variables
         extract($this->settings);
@@ -143,7 +131,7 @@ class SessionMiddleware
         // Set session encryption
         if (is_string($encryption_key)) {
             // Add HTTP user agent to encryption key to strengthen encryption
-            $encryption_key .= md5($this->container->request->getHeaderLine('HTTP_USER_AGENT'));
+            $encryption_key .= md5($request->getHeaderLine('HTTP_USER_AGENT'));
 
             $handler = new \AdBar\SecureSessionHandler($encryption_key);
             session_set_save_handler($handler, true);
