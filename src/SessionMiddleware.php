@@ -124,7 +124,7 @@ class SessionMiddleware
             ini_set('session.hash_function', 'sha512');
         } else {
             // PHP version >= 7.1
-            ini_set('session.sid_length', 64);
+            ini_set('session.sid_length', 128);
         }
 
         // Set session cache limiter
