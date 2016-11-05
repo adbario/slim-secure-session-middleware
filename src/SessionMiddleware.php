@@ -19,7 +19,7 @@ class SessionMiddleware
 
         // Session cookie settings
         'name'           => 'slim_session',
-        'lifetime'       => 1440,
+        'lifetime'       => 24,
         'path'           => '/',
         'domain'         => null,
         'secure'         => false,
@@ -91,9 +91,12 @@ class SessionMiddleware
         ini_set('session.use_cookies', 1);
         ini_set('session.use_only_cookies', 1);
 
-        // If lifetime is string, convert it to timestamp
         if (is_string($settings['lifetime'])) {
+            // if lifetime is string, convert it to seconds
             $settings['lifetime'] = strtotime($settings['lifetime']) - time();
+        } else {
+            // if lifetime is minutes, convert it to seconds
+            $settings['lifetime'] *= 60;
         }
 
         // Set number of seconds after which data will be seen as garbage
