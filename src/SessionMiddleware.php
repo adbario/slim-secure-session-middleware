@@ -118,9 +118,11 @@ class SessionMiddleware
             ini_set('session.save_path', $settings['save_path']);
         }
 
-        // Set session id hash function / length
+        // Set session id strength
         if (version_compare(PHP_VERSION, '7.1', '<')) {
             // PHP version < 7.1
+            ini_set('session.entropy_file', '/dev/urandom');
+            ini_set('session.entropy_length', 128);
             ini_set('session.hash_function', 'sha512');
         } else {
             // PHP version >= 7.1
