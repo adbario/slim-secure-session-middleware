@@ -87,7 +87,10 @@ class SessionMiddleware
     {
         $settings = $this->settings;
 
-        // Set session to use cookies and only cookies
+        // Enable strict mode
+        ini_set('session.use_strict_mode', 1);
+
+        // Use cookies and only cookies to store session id
         ini_set('session.use_cookies', 1);
         ini_set('session.use_only_cookies', 1);
         
