@@ -55,9 +55,9 @@ When creating application, inject all settings:
     $app = new \Slim\App(['settings' => $settings]);
 
 ### Middleware
-Add middleware:
+Add middleware with session settings:
 
-    $app->add(new \AdBar\SessionMiddleware($app->getContainer()));
+    $app->add(new \AdBar\SessionMiddleware($settings['session']));
 
 ### Sessions
 This package comes with session helper class, but if you wish to use only PHP session superglobal, then you can skip the rest of this guide and just enjoy coding! Session security configuration is done within middleware, so by using native superglobal your session is still secure (and encrypted if you set up encryption key in settings).
@@ -72,10 +72,19 @@ Session helper class uses namespaces for sessions, so basically session variable
             )
     )
 
-If you don't need session namespaces in your application, then you can just ignore all namespace related parts on this guide and set namespace name in settings to null.
+If you don't need session namespaces in your application, then you can just ignore all namespace related parts on this guide and set namespace name in settings to null (it will default to namespace "slim_app").
 
-#### Basic usage    
-Session helper class is injected to application container and can be used as an object, i.e. like this:
+#### Basic usage
+
+You can inject session helper class in application container:
+
+    $container['session'] = function ($container) {
+        return new \AdBar\Session(
+            $container->get('settings')['session']['namespace']
+        );
+    };
+
+If session helper class is injected in application container and can be used as an object, i.e. like this:
 
     $app->get('/', function (Request $request, Response $response) {
         // Namespace is now picked up from settings
