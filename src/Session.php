@@ -1,6 +1,6 @@
 <?php
 
-namespace AdBar;
+namespace Adbar;
 
 /**
  * Session
@@ -36,7 +36,7 @@ class Session extends Dot
         if (!isset($_SESSION[$namespace])) {
             $_SESSION[$namespace] = [];
         }
-        $this->setDataAsRef($_SESSION[$namespace]);
+        $this->setReference($_SESSION[$namespace]);
         $this->namespace = $namespace;
     }
 
@@ -143,7 +143,7 @@ class Session extends Dot
      * @param  mixed|null $key       Session key or array of keys
      * @param  boolean    $format    Format option
      */
-    public function clearFrom($namespace, $key = null, $format = false)
+    public function clearFrom($namespace, $key = null)
     {
         if (isset($_SESSION[$namespace]) || $format === true) {
             $oldNamespace = $this->namespace;
