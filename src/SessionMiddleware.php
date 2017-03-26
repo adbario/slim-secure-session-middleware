@@ -1,6 +1,6 @@
 <?php
 
-namespace AdBar;
+namespace Adbar;
 
 use RuntimeException;
 use Psr\Http\Message\ServerRequestInterface as Request;
@@ -93,7 +93,7 @@ class SessionMiddleware
         // Use cookies and only cookies to store session id
         ini_set('session.use_cookies', 1);
         ini_set('session.use_only_cookies', 1);
-        
+
         // Disable inserting session id into links automatically
         ini_set('session.use_trans_sid', 0);
 
@@ -149,7 +149,7 @@ class SessionMiddleware
             // Add HTTP user agent to encryption key to strengthen encryption
             $settings['encryption_key'] .= md5($request->getHeaderLine('HTTP_USER_AGENT'));
 
-            $handler = new \AdBar\SecureSessionHandler($settings['encryption_key']);
+            $handler = new \Adbar\SecureSessionHandler($settings['encryption_key']);
             session_set_save_handler($handler, true);
         }
 
