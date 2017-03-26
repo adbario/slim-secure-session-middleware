@@ -1,6 +1,6 @@
 <?php
 
-namespace AdBar;
+namespace Adbar;
 
 use SessionHandler;
 use RuntimeException;
