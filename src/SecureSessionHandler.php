@@ -40,7 +40,7 @@ class SecureSessionHandler extends SessionHandler
     {
         $data = parent::read($sid);
 
-        return ($data) ? $this->decrypt($data) : null;
+        return ($data) ? $this->decrypt($data) : '';
     }
 
     /**
