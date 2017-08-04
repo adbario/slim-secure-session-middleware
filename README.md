@@ -283,3 +283,7 @@ Multiple values at once:
 #### Get current namespace
 
     $namespace = $session->getNamespace();
+
+#### Delete namespace
+
+    $session->deleteNamespace('namespace_to_delete');
