@@ -51,6 +51,18 @@ class Session extends Dot
     }
 
     /**
+     * Delete session namespace
+     *
+     * @param string $namespace Session namespace
+     */
+    public function deleteNamespace($namespace)
+    {
+        if (isset($_SESSION[$namespace])) {
+            unset($_SESSION[$namespace]);
+        }
+    }
+
+    /**
      * Set session value or array of values to specific namespace
      *
      * @param string     $namespace Session namespace
