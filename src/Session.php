@@ -141,16 +141,13 @@ class Session extends Dot
      *
      * @param  string     $namespace Session namespace
      * @param  mixed|null $key       Session key or array of keys
-     * @param  boolean    $format    Format option
      */
     public function clearFrom($namespace, $key = null)
     {
-        if (isset($_SESSION[$namespace]) || $format === true) {
-            $oldNamespace = $this->namespace;
-            $this->setNamespace($namespace);
-            $this->clear($key, $format);
-            $this->setNamespace($oldNamespace);
-        }
+        $oldNamespace = $this->namespace;
+        $this->setNamespace($namespace);
+        $this->clear($key);
+        $this->setNamespace($oldNamespace);
     }
 
     /**
